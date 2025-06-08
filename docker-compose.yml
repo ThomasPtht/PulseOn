@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: pulseon-db
+    environment:
+       POSTGRES_USER: postgres
+       POSTGRES_PASSWORD: example
+       POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+
+  adminer:
+    image: adminer
+    container_name: pulseon-adminer
+    ports:
+      - "8080:8080"

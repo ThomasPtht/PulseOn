@@ -1,10 +1,10 @@
 import { DataSource } from "typeorm";
-import { User } from "./entities/User";
+import { User } from "../entities/User";
 
 
 export const dataSourcePulseOn = new DataSource({
     type: "postgres",
-    host:"db",
+    host: "localhost",
     username: "postgres",
     database: "postgres",
     password: "example",
