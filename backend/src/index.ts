@@ -1,12 +1,29 @@
-import express from 'express'
+import "reflect-metadata";
+import { ApolloServer } from '@apollo/server';
+import { startStandaloneServer } from '@apollo/server/standalone'
+import { buildSchema } from 'type-graphql';
+import { PulseOnDataSource } from './config/db';
+import { UserResolver } from './resolvers/UserResolver';
 
-const app = express()
-const port = 3000
 
-app.get('/', (_req, res) => {
-    res.send('Hello World!')
-})
+const start = async () => {
+    await PulseOnDataSource.initialize()
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+
+    const schema = await buildSchema({
+        resolvers: [UserResolver],
+    });
+
+
+
+
+    const server = new ApolloServer({
+        schema,
+    });
+
+
+    const { url } = await startStandaloneServer(server, { listen: { port: 4000 } });
+
+    console.log(`🚀 Server listening at: ${url}`);
+}
+start()
