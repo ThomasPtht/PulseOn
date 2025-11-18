@@ -37,10 +37,10 @@ export class UserResolver {
         }
         if (isPasswordCorrect && user !== null) {
             const token = jwt.sign(
-                { email: user.email },
+                { email: user.email, id: user.id },
                 process.env.JWT_SECRET_KEY as Secret, { expiresIn: "1h" }
             )
-            context.res.setHeader("Set-Cookie", `token=${token}; Secure; HttpOnly`);
+            context.res.setHeader("Set-Cookie", `token=${token}; HttpOnly; SameSite=Lax; Path=/`)
             return token
 
         } else {
@@ -53,6 +53,7 @@ export class UserResolver {
     async logout(@Ctx() context: any) {
         context.res.setHeader("Set-Cookie",
             `token=; Secure; HttpOnly;expires=${new Date(Date.now()).toUTCString()}`)
+        return "Logged out successfully";
 
     }
 
