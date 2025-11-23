@@ -6,19 +6,16 @@ import { useNavigate } from "react-router";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useRegisterMutation } from "@/generated/graphql-types";
+import { useLoginMutation, type LoginMutation } from "@/generated/graphql-types";
 
 
 
-export function RegisterForm() {
+export function LoginForm() {
 
-    const [registerMutation] = useRegisterMutation();
+    const [loginMutation] = useLoginMutation();
     const navigate = useNavigate();
 
-    const formSchema = z.object({
-        username: z.string().min(2, {
-            message: "Username must be at least 2 characters.",
-        }),
+    const formLoginSchema = z.object({
         email: z.string().min(5, {
             message: "Please enter a valid email address.",
         }),
@@ -26,29 +23,29 @@ export function RegisterForm() {
             message: "Password must be at least 6 characters.",
         }),
     })
+    type LoginFormValues = z.infer<typeof formLoginSchema>;
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<LoginFormValues>({
+        resolver: zodResolver(formLoginSchema),
         defaultValues: {
-            username: "",
             email: "",
             password: "",
         },
     });
 
-    const onSubmit = async (data: z.infer<typeof formSchema>) => {
-        registerMutation({
+    const onSubmit = async (data: LoginFormValues) => {
+        loginMutation({
             variables: {
                 data: { ...data }
             },
-            onCompleted: () => {
-
-                navigate("/login");
-                toast.success("Registration successful! Please log in.");
+            onCompleted: (result: LoginMutation) => {
+                console.log(result);
+                navigate("/");
+                toast.success("Login successful! Welcome back.");
             },
             onError: (error: Error) => {
-                console.error("Registration error:", error);
-                toast.error("Registration failed. Please try again.");
+                console.error("Login error:", error);
+                toast.error("Login failed. Please check your credentials and try again.");
             }
         });
     }
@@ -57,22 +54,7 @@ export function RegisterForm() {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <FormField
-                    control={form.control}
-                    name="username"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Username</FormLabel>
-                            <FormControl>
-                                <Input placeholder="johndoe" {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                This is your public display name.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+
                 <FormField
                     control={form.control}
                     name="email"
@@ -105,7 +87,7 @@ export function RegisterForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Create Account</Button>
+                <Button type="submit">Login</Button>
             </form>
         </Form>
     )

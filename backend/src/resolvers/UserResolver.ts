@@ -3,6 +3,7 @@ import jwt, { Secret } from "jsonwebtoken";
 import { User } from "../entities/User";
 import * as argon2 from "argon2";
 import { UserInput } from "../inputs/UserInput";
+import { UserLoginInput } from "../inputs/UserLoginInput";
 
 
 
@@ -26,7 +27,7 @@ export class UserResolver {
     }
 
     @Mutation(() => String)
-    async login(@Arg("data") loginUserInput: UserInput, @Ctx() context: any) {
+    async login(@Arg("data") loginUserInput: UserLoginInput, @Ctx() context: any) {
         let isPasswordCorrect = false
         const user = await User.findOneBy({ email: loginUserInput.email })
         if (user) {
