@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client/react';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -130,13 +130,20 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login: string };
 
+export type CreateRunSessionMutationVariables = Exact<{
+  data: RunSessionInput;
+}>;
+
+
+export type CreateRunSessionMutation = { __typename?: 'Mutation', createRunSession: { __typename?: 'RunSession', id: string, date: any, distance: number, duration: number, avgPace: string, elevation: number, user: { __typename?: 'User', id: string } } };
+
 
 export const RegisterDocument = gql`
     mutation Register($data: UserInput!) {
   register(data: $data)
 }
     `;
-
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
  * __useRegisterMutation__
@@ -156,18 +163,18 @@ export const RegisterDocument = gql`
  * });
  */
 export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+      }
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
-// export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($data: UserLoginInput!) {
   login(data: $data)
 }
     `;
-// export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
  * __useLoginMutation__
@@ -187,9 +194,50 @@ export const LoginDocument = gql`
  * });
  */
 export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
-// export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const CreateRunSessionDocument = gql`
+    mutation CreateRunSession($data: RunSessionInput!) {
+  createRunSession(data: $data) {
+    id
+    date
+    distance
+    duration
+    avgPace
+    elevation
+    user {
+      id
+    }
+  }
+}
+    `;
+export type CreateRunSessionMutationFn = Apollo.MutationFunction<CreateRunSessionMutation, CreateRunSessionMutationVariables>;
+
+/**
+ * __useCreateRunSessionMutation__
+ *
+ * To run a mutation, you first call `useCreateRunSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateRunSessionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createRunSessionMutation, { data, loading, error }] = useCreateRunSessionMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateRunSessionMutation(baseOptions?: Apollo.MutationHookOptions<CreateRunSessionMutation, CreateRunSessionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateRunSessionMutation, CreateRunSessionMutationVariables>(CreateRunSessionDocument, options);
+      }
+export type CreateRunSessionMutationHookResult = ReturnType<typeof useCreateRunSessionMutation>;
+export type CreateRunSessionMutationResult = Apollo.MutationResult<CreateRunSessionMutation>;
+export type CreateRunSessionMutationOptions = Apollo.BaseMutationOptions<CreateRunSessionMutation, CreateRunSessionMutationVariables>;

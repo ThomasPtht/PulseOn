@@ -11,3 +11,19 @@ export const LOGIN = gql`
     login(data: $data)
   }
 `;
+
+export const CREATE_RUN_SESSION = gql`
+mutation CreateRunSession($data: RunSessionInput!) {
+  createRunSession(data: $data) {
+    id
+    date
+    distance
+    duration
+    avgPace
+    elevation
+    user {
+      id
+    }
+  }
+}
+`;
