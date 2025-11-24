@@ -2,44 +2,43 @@ import { useForm } from "react-hook-form"
 import { Card, CardTitle } from "./ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import z from "zod"
+import * as z from "zod"
 import { Input } from "./ui/input"
 import { useCreateRunSessionMutation } from "@/generated/graphql-types"
 import { useNavigate } from "react-router"
 import { toast } from "sonner"
+import { Button } from "./ui/button"
 
 const formRunningSchema = z.object({
-  date: z.date(),
+  date: z.string().min(1, { message: "Date is required." }),
   distance: z.number().min(0, { message: "Distance must be a positive number." }),
   duration: z.number().min(0, { message: "Duration must be a positive number." }),
   avgPace: z.string().min(1, { message: "Average pace is required." }),
   elevation: z.number().min(0, { message: "Elevation must be a positive number." }),
 })
 
+type FormRunningValues = z.infer<typeof formRunningSchema>
 
 const FormRunning = () => {
-
   const [RunningSession] = useCreateRunSessionMutation();
   const navigate = useNavigate();
 
-
-
-  const form = useForm<z.infer<typeof formRunningSchema>>({
+  const form = useForm<FormRunningValues>({
     resolver: zodResolver(formRunningSchema),
     defaultValues: {
-      date: undefined,
-      distance: undefined,
-      duration: undefined,
+      date: "",
+      distance: 0,
+      duration: 0,
       avgPace: "",
-      elevation: undefined,
+      elevation: 0,
     },
   })
 
-  function onSubmit(values: z.infer<typeof formRunningSchema>) {
+  function onSubmit(values: FormRunningValues) {
     RunningSession({
       variables: {
         data: {
-          date: values.date,
+          date: new Date(values.date).toISOString(),
           distance: values.distance,
           duration: values.duration,
           avgPace: values.avgPace,
@@ -49,43 +48,33 @@ const FormRunning = () => {
       onCompleted: () => {
         toast.success("Session de course ajoutée avec succès !");
         navigate("/");
-      }
-      ,
+      },
       onError: (error: Error) => {
         console.error("Erreur lors de l'ajout de la session de course :", error);
         toast.error("Échec de l'ajout de la session de course. Veuillez réessayer.");
       }
-    }
-    )
-    console.log(values)
+    })
   }
 
-
-
   return (
-
     <div>
-      <Card className="p-4 w-30 sm:w-40 md:w-48 lg:w-60 xl:w-72 2xl:w-80 ">
+      <Card className="p-4 w-full max-w-md">
         <CardTitle className="text-lg mb-4">Détails de la course</CardTitle>
-        <div className="space-y-4">Enregistrez les informations de votre séance de course ici.</div>
+        <div className="mb-4 text-sm text-muted-foreground">
+          Enregistrez les informations de votre séance de course ici.
+        </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 
             <FormField
               control={form.control}
               name="date"
-              render={({ }) => (
+              render={({ field }) => (
                 <FormItem>
-                  <FormLabel >Date</FormLabel>
+                  <FormLabel>Date</FormLabel>
                   <FormControl>
-                    {/* <Input
-                      {...field}
-                      placeholder=""
-
-                      aria-label=""
-
-                    /> */}
+                    <Input type="date" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -97,14 +86,14 @@ const FormRunning = () => {
               name="distance"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel >Distance (km) </FormLabel>
+                  <FormLabel>Distance (km)</FormLabel>
                   <FormControl>
                     <Input
-                      {...field}
+                      type="number"
+                      step="0.1"
                       placeholder="25.4"
-
-                      aria-label=""
-
+                      {...field}
+                      onChange={(e) => field.onChange(parseFloat(e.target.value))}
                     />
                   </FormControl>
                   <FormMessage />
@@ -117,14 +106,13 @@ const FormRunning = () => {
               name="duration"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel >Durée (minutes)</FormLabel>
+                  <FormLabel>Durée (minutes)</FormLabel>
                   <FormControl>
                     <Input
+                      type="number"
+                      placeholder="30"
                       {...field}
-                      placeholder="30:15"
-
-                      aria-label="Durée de la course"
-
+                      onChange={(e) => field.onChange(parseFloat(e.target.value))}
                     />
                   </FormControl>
                   <FormMessage />
@@ -137,14 +125,9 @@ const FormRunning = () => {
               name="avgPace"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel >Allure (min/km)</FormLabel>
+                  <FormLabel>Allure (min/km)</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="5:30"
-                      aria-label="Allure moyenne"
-
-                    />
+                    <Input placeholder="5:30" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -156,28 +139,28 @@ const FormRunning = () => {
               name="elevation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel >Dénivelé (mètres)</FormLabel>
+                  <FormLabel>Dénivelé (mètres)</FormLabel>
                   <FormControl>
                     <Input
-                      {...field}
+                      type="number"
                       placeholder="135"
-
-                      aria-label="Dénivelé en mètres"
-
+                      {...field}
+                      onChange={(e) => field.onChange(parseFloat(e.target.value))}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <Button className="w-full" type="submit">
+              Enregistrer la séance
+            </Button>
           </form>
         </Form>
-
       </Card>
     </div>
   )
 }
-
-
 
 export default FormRunning

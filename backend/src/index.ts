@@ -1,4 +1,3 @@
-
 import "dotenv/config";
 import * as cookie from "cookie";
 import "reflect-metadata";
@@ -10,8 +9,6 @@ import { PulseOnDataSource } from './config/db';
 import { UserResolver } from './resolvers/UserResolver';
 import { RunSessionResolver } from "./resolvers/RunSessionResolver";
 
-
-
 const start = async () => {
     if (
         process.env.JWT_SECRET_KEY === null || process.env.JWT_SECRET_KEY === undefined
@@ -20,31 +17,29 @@ const start = async () => {
     }
     await PulseOnDataSource.initialize()
 
-
     const schema = await buildSchema({
         resolvers: [UserResolver, RunSessionResolver],
     });
 
-
-
-
     const server = new ApolloServer({
         schema,
-
     });
-
 
     const { url } = await startStandaloneServer(server, {
         listen: { port: 4000 },
         context: async ({ req, res }) => {
             if (req.headers.cookie) {
                 const cookies = cookie.parse(req.headers.cookie as string);
+                console.log("Cookies parsés:", cookies); // ✅ Debug
+
                 if (cookies.token) {
                     try {
                         const payload: any = jwt.verify(
                             cookies.token,
                             process.env.JWT_SECRET_KEY as Secret
                         );
+
+                        console.log("User authentifié:", payload); // ✅ Debug
 
                         return {
                             user: {
@@ -55,12 +50,12 @@ const start = async () => {
                         };
                     } catch (err: any) {
                         console.error("JWT error in context:", err.message);
-                        // Token invalide ou expiré → on ne jette pas, on considère juste qu'il n'y a pas d'user
                         return { res };
                     }
                 }
             }
 
+            console.log("Aucun cookie trouvé"); // ✅ Debug
             return { res };
         }
     });

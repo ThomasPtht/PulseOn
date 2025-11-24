@@ -7,8 +7,15 @@ import App from './App.tsx'
 import { BrowserRouter } from "react-router";
 import { Toaster } from "@/components/ui/sonner";
 
+
+
+const httpLink = new HttpLink({
+  uri: "/graphql", // ✅ Utilise le proxy Vite
+  credentials: 'include', // ✅ Envoie les cookies
+});
+
 const client = new ApolloClient({
-  link: new HttpLink({ uri: "http://localhost:4000/graphql" }),
+  link: httpLink,
   cache: new InMemoryCache(),
 });
 

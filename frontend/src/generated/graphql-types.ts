@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import * as Apollo from '@apollo/client/react';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -50,7 +50,7 @@ export type MutationRegisterArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  getMyRunSessions: RunSession;
+  getMyRunSessions: Array<RunSession>;
   hello: Scalars['String']['output'];
 };
 
@@ -137,6 +137,11 @@ export type CreateRunSessionMutationVariables = Exact<{
 
 export type CreateRunSessionMutation = { __typename?: 'Mutation', createRunSession: { __typename?: 'RunSession', id: string, date: any, distance: number, duration: number, avgPace: string, elevation: number, user: { __typename?: 'User', id: string } } };
 
+export type GetMyRunSessionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMyRunSessionsQuery = { __typename?: 'Query', getMyRunSessions: Array<{ __typename?: 'RunSession', id: string, date: any, distance: number, duration: number, avgPace: string, elevation: number, user: { __typename?: 'User', id: string } }> };
+
 
 export const RegisterDocument = gql`
     mutation Register($data: UserInput!) {
@@ -163,9 +168,9 @@ export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, Regis
  * });
  */
 export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+}
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
@@ -194,9 +199,9 @@ export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutati
  * });
  */
 export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+}
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
@@ -235,9 +240,56 @@ export type CreateRunSessionMutationFn = Apollo.MutationFunction<CreateRunSessio
  * });
  */
 export function useCreateRunSessionMutation(baseOptions?: Apollo.MutationHookOptions<CreateRunSessionMutation, CreateRunSessionMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateRunSessionMutation, CreateRunSessionMutationVariables>(CreateRunSessionDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateRunSessionMutation, CreateRunSessionMutationVariables>(CreateRunSessionDocument, options);
+}
 export type CreateRunSessionMutationHookResult = ReturnType<typeof useCreateRunSessionMutation>;
 export type CreateRunSessionMutationResult = Apollo.MutationResult<CreateRunSessionMutation>;
 export type CreateRunSessionMutationOptions = Apollo.BaseMutationOptions<CreateRunSessionMutation, CreateRunSessionMutationVariables>;
+export const GetMyRunSessionsDocument = gql`
+    query GetMyRunSessions {
+  getMyRunSessions {
+    id
+    date
+    distance
+    duration
+    avgPace
+    elevation
+    user {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMyRunSessionsQuery__
+ *
+ * To run a query within a React component, call `useGetMyRunSessionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyRunSessionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyRunSessionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMyRunSessionsQuery(baseOptions?: Apollo.QueryHookOptions<GetMyRunSessionsQuery, GetMyRunSessionsQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetMyRunSessionsQuery, GetMyRunSessionsQueryVariables>(GetMyRunSessionsDocument, options);
+}
+export function useGetMyRunSessionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyRunSessionsQuery, GetMyRunSessionsQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetMyRunSessionsQuery, GetMyRunSessionsQueryVariables>(GetMyRunSessionsDocument, options);
+}
+export function useGetMyRunSessionsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetMyRunSessionsQuery, GetMyRunSessionsQueryVariables>) {
+  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<GetMyRunSessionsQuery, GetMyRunSessionsQueryVariables>(GetMyRunSessionsDocument, options);
+}
+export type GetMyRunSessionsQueryHookResult = ReturnType<typeof useGetMyRunSessionsQuery>;
+export type GetMyRunSessionsLazyQueryHookResult = ReturnType<typeof useGetMyRunSessionsLazyQuery>;
+export type GetMyRunSessionsSuspenseQueryHookResult = ReturnType<typeof useGetMyRunSessionsSuspenseQuery>;
+export type GetMyRunSessionsQueryResult = Apollo.QueryResult<GetMyRunSessionsQuery, GetMyRunSessionsQueryVariables>;

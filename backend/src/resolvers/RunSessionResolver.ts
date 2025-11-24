@@ -18,18 +18,29 @@ export class RunSessionResolver {
             user,
         })
         console.log("New run session created for user:", user?.id);
-        return newRunSession;
+        // ✅ Recharger la session avec ses relations pour s'assurer que tout est bien retourné
+        const savedRunSession = await RunSession.findOne({
+            where: { id: newRunSession.id },
+            relations: ["user"]
+        });
+
+        if (!savedRunSession) {
+            throw new Error("Failed to retrieve saved run session");
+        }
+
+        return savedRunSession;
     }
 
-    @Query(() => RunSession)
+    @Query(() => [RunSession])
     async getMyRunSessions(@Ctx() context: any) {
         const user = await User.findOneBy({ id: context.user.id })
         if (!user) {
             throw new Error("User not found");
         }
-        const runSession = await RunSession.findOne({
+        const runSession = await RunSession.find({
             where: { user: { id: user.id } },
-            relations: ["user"] // Charge la relation user
+            relations: ["user"], // Charge la relation user
+            order: { date: "DESC" } // Trie par date décroissante
         })
         if (!runSession) {
             throw new Error("Run session not found for this user");
