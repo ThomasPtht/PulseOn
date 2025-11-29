@@ -33,6 +33,7 @@ export function Header() {
                             <Bell className="h-5 w-5" />
                             <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full" />
                         </Button>
+                        }
                         <Avatar className="h-9 w-9 cursor-pointer">
                             <AvatarImage src="/placeholder.svg?height=36&width=36" />
                             <AvatarFallback className="bg-primary text-primary-foreground">JD</AvatarFallback>

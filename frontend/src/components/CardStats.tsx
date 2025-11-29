@@ -4,7 +4,7 @@ import { Card, CardContent, CardTitle } from './ui/card'
 
 type CardStatsProps = {
     title: string;
-    value: string;
+    value: number | string;
     icon: string;
 }
 
