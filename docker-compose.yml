@@ -39,7 +39,8 @@ services:
   frontend:
     build: ./frontend
     volumes:
-      - ./frontend/src:/app/src
+      - ./frontend:/app
+      - /app/node_modules
     depends_on:
       backend:
         condition: service_healthy
