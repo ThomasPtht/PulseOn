@@ -9,6 +9,9 @@ export class RunSessionInput implements Partial<RunSession> {
     date: Date;
 
     @Field()
+    title: string;
+
+    @Field()
     distance: number; // in kilometers
 
     @Field()

@@ -14,7 +14,7 @@ const RecentsSessions = () => {
 
     return (
         <div>
-            <Card className="p-6">
+            <Card className="p-6 w-5xl">
                 <h2 className="text-lg font-semibold mb-4">Séances récentes</h2>
 
                 {sessions.length === 0 ? (
@@ -25,6 +25,7 @@ const RecentsSessions = () => {
                             <RunSessionCard
                                 key={session.id}
                                 id={session.id}
+                                title={session.title ?? null}
                                 date={session.date}
                                 distance={session.distance}
                                 duration={session.duration}

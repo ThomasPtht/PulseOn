@@ -62,6 +62,7 @@ export type RunSession = {
   duration: Scalars['Int']['output'];
   elevation: Scalars['Int']['output'];
   id: Scalars['ID']['output'];
+  title?: Maybe<Scalars['String']['output']>;
   user: User;
 };
 
@@ -135,12 +136,12 @@ export type CreateRunSessionMutationVariables = Exact<{
 }>;
 
 
-export type CreateRunSessionMutation = { __typename?: 'Mutation', createRunSession: { __typename?: 'RunSession', id: string, date: any, distance: number, duration: number, avgPace: string, elevation: number, user: { __typename?: 'User', id: string } } };
+export type CreateRunSessionMutation = { __typename?: 'Mutation', createRunSession: { __typename?: 'RunSession', id: string, title?: string | null, date: any, distance: number, duration: number, avgPace: string, elevation: number, user: { __typename?: 'User', id: string } } };
 
 export type GetMyRunSessionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMyRunSessionsQuery = { __typename?: 'Query', getMyRunSessions: Array<{ __typename?: 'RunSession', id: string, date: any, distance: number, duration: number, avgPace: string, elevation: number, user: { __typename?: 'User', id: string } }> };
+export type GetMyRunSessionsQuery = { __typename?: 'Query', getMyRunSessions: Array<{ __typename?: 'RunSession', id: string, title?: string | null, date: any, distance: number, duration: number, avgPace: string, elevation: number, user: { __typename?: 'User', id: string } }> };
 
 
 export const RegisterDocument = gql`
@@ -209,6 +210,7 @@ export const CreateRunSessionDocument = gql`
     mutation CreateRunSession($data: RunSessionInput!) {
   createRunSession(data: $data) {
     id
+    title
     date
     distance
     duration
@@ -250,6 +252,7 @@ export const GetMyRunSessionsDocument = gql`
     query GetMyRunSessions {
   getMyRunSessions {
     id
+    title
     date
     distance
     duration

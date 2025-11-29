@@ -1,6 +1,7 @@
 import { Activity, Bell, Menu, Plus } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Link } from 'react-router'
 
 export function Header() {
     return (
@@ -25,15 +26,17 @@ export function Header() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-2">
-                        <Button size="sm" className="gap-2 hidden sm:flex">
-                            <Plus className="h-4 w-4" />
-                            Nouvelle séance
-                        </Button>
+                        <Link to="/add-workout">
+                            <Button size="sm" className="gap-2 hidden sm:flex">
+                                <Plus className="h-4 w-4" />
+                                Nouvelle séance
+                            </Button>
+                        </Link>
                         <Button size="icon" variant="ghost" className="relative">
                             <Bell className="h-5 w-5" />
                             <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full" />
                         </Button>
-                        }
+
                         <Avatar className="h-9 w-9 cursor-pointer">
                             <AvatarImage src="/placeholder.svg?height=36&width=36" />
                             <AvatarFallback className="bg-primary text-primary-foreground">JD</AvatarFallback>

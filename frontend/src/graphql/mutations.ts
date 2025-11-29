@@ -16,6 +16,7 @@ export const CREATE_RUN_SESSION = gql`
 mutation CreateRunSession($data: RunSessionInput!) {
   createRunSession(data: $data) {
     id
+    title
     date
     distance
     duration

@@ -11,6 +11,7 @@ import { Button } from "./ui/button"
 
 const formRunningSchema = z.object({
   date: z.string().min(1, { message: "Date is required." }),
+  title: z.string().min(1, { message: "Title is required." }),
   distance: z.number().min(0, { message: "Distance must be a positive number." }),
   duration: z.number().min(0, { message: "Duration must be a positive number." }),
   avgPace: z.string().min(1, { message: "Average pace is required." }),
@@ -27,6 +28,7 @@ const FormRunning = () => {
     resolver: zodResolver(formRunningSchema),
     defaultValues: {
       date: "",
+      title: "",
       distance: 0,
       duration: 0,
       avgPace: "",
@@ -39,6 +41,7 @@ const FormRunning = () => {
       variables: {
         data: {
           date: new Date(values.date).toISOString(),
+          title: values.title,
           distance: values.distance,
           duration: values.duration,
           avgPace: values.avgPace,
@@ -75,6 +78,20 @@ const FormRunning = () => {
                   <FormLabel>Date</FormLabel>
                   <FormControl>
                     <Input type="date" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Titre</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Course du matin" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

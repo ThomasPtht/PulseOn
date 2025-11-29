@@ -9,6 +9,10 @@ export class RunSession extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Field({ nullable: true })
+    @Column({ nullable: true })
+    title: string;
+
     @Field()
     @Column()
     date: Date;
