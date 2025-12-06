@@ -17,3 +17,12 @@ query GetMyRunSessions {
   }
 }
 `;
+
+export const GET_EXERCISES = gql`
+mutation GetExercise {
+  getExercise {
+    id
+    name
+  }
+}
+`;

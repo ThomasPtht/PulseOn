@@ -61,7 +61,7 @@ const FormRunning = () => {
 
   return (
     <div>
-      <Card className="p-4 w-full max-w-md">
+      <Card className="p-4 w-full max-w-4xl mt-6">
         <CardTitle className="text-lg mb-4">Détails de la course</CardTitle>
         <div className="mb-4 text-sm text-muted-foreground">
           Enregistrez les informations de votre séance de course ici.

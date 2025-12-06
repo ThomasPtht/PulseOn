@@ -8,6 +8,8 @@ import { buildSchema } from 'type-graphql';
 import { PulseOnDataSource } from './config/db';
 import { UserResolver } from './resolvers/UserResolver';
 import { RunSessionResolver } from "./resolvers/RunSessionResolver";
+import { ExerciseResolver } from "./resolvers/ExerciseResolver";
+import { WorkoutSessionResolver } from "./resolvers/WorkoutSessionResolver";
 
 const start = async () => {
     if (
@@ -18,7 +20,7 @@ const start = async () => {
     await PulseOnDataSource.initialize()
 
     const schema = await buildSchema({
-        resolvers: [UserResolver, RunSessionResolver],
+        resolvers: [UserResolver, RunSessionResolver, ExerciseResolver, WorkoutSessionResolver],
     });
 
     const server = new ApolloServer({

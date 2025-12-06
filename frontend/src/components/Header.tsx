@@ -13,15 +13,17 @@ export function Header() {
                         <Button variant="ghost" size="icon" className="lg:hidden">
                             <Menu className="h-5 w-5" />
                         </Button>
-                        <div className="flex items-center gap-2">
-                            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary">
-                                <Activity className="h-6 w-6 text-primary-foreground" />
+                        <Link to="/">
+                            <div className="flex items-center gap-2">
+                                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary">
+                                    <Activity className="h-6 w-6 text-primary-foreground" />
+                                </div>
+                                <div>
+                                    <h1 className="text-xl font-bold tracking-tight">PulseOn</h1>
+                                    <p className="text-xs text-muted-foreground">Fitness Tracker</p>
+                                </div>
                             </div>
-                            <div>
-                                <h1 className="text-xl font-bold tracking-tight">PulseOn</h1>
-                                <p className="text-xs text-muted-foreground">Fitness Tracker</p>
-                            </div>
-                        </div>
+                        </Link>
                     </div>
 
                     {/* Actions */}

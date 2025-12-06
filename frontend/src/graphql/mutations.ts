@@ -28,3 +28,30 @@ mutation CreateRunSession($data: RunSessionInput!) {
   }
 }
 `;
+
+export const CREATE_EXERCISE = gql`
+mutation CreateExercise($data: ExerciseInput!) {
+  createExercise(data: $data) {
+    id
+    name
+  }
+}
+`;
+
+export const CREATE_WORKOUT_SESSION = gql`
+mutation CreateWorkoutSession($data: WorkoutSessionInput!) {
+  createWorkoutSession(data: $data) {
+    id
+    date
+    exercises {
+      id
+      name
+      sets {
+        id
+        reps
+        weight
+      }
+    }
+  }
+}
+`;
