@@ -12,7 +12,7 @@ const AddSessionCard = ({ title, icon, description }: CardSessionProps) => {
     return (
         <div>
 
-            <Card className="p-4 w-full transition-transform duration-200 hover:scale-105 hover:shadow-xl">
+            <Card className="p-4 w-full transition-transform duration-200 hover:scale-102 hover:shadow-xl">
                 <div className="flex flex-col gap-6 justify-between items-start mb-2">
                     <div className='flex items-center justify-between w-full'>
                         <div className="text-2xl p-2 bg-red-100 rounded-md">{icon}
