@@ -10,8 +10,8 @@ type CardStatsProps = {
 const CardStats = ({ title, icon, value, className }: CardStatsProps) => {
     return (
         <Card className={`p-4 flex flex-col ${className ?? ""}`}>
-            <div className="flex justify-between items-start mb-2">
-                <CardTitle className="text-sm">{title}</CardTitle>
+            <div className="flex justify-between items-start">
+                <CardTitle className="text-lg">{title}</CardTitle>
                 <div className="text-2xl p-2 bg-red-100 rounded-md">{icon}</div>
             </div>
             <CardContent className="p-0">

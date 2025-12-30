@@ -6,6 +6,7 @@ import './index.css'
 import App from './App.tsx'
 import { BrowserRouter } from "react-router";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "./context/AuthContext.tsx";
 
 
 
@@ -22,10 +23,12 @@ const client = new ApolloClient({
 createRoot(document.getElementById('root')!).render(
   <ApolloProvider client={client}>
     <StrictMode>
-      <BrowserRouter>
-        <App />
-        <Toaster />
-      </BrowserRouter>
-    </StrictMode>
-  </ApolloProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+          <Toaster />
+        </BrowserRouter>
+      </AuthProvider>
+    </StrictMode >
+  </ApolloProvider >
 )
