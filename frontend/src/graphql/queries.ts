@@ -26,3 +26,19 @@ mutation GetExercise {
   }
 }
 `;
+
+export const GET_CURRENT_USER = gql`
+query GetCurrentUser {
+  getCurrentUser {
+    id
+    username
+    email
+  }
+}
+`;
+
+export const LOGOUT = gql`
+mutation Logout {
+  logout
+}
+`;

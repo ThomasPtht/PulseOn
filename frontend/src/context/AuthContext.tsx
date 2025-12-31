@@ -1,35 +1,44 @@
-import { createContext, useState, useEffect, type ReactNode } from "react";
+import { createContext, type ReactNode } from "react";
+import { useCurrentUser, useLogout } from "../hooks/useAuth";
+
+type User = {
+    id: string;
+    username: string;
+    email: string;
+};
 
 type AuthContextType = {
-    userLoggedIn: boolean;
-    login: (token: string) => void;
+    user: User | null;
+    isLoading: boolean;
+    isAuthenticated: boolean;
     logout: () => void;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
+    const { data, loading, error } = useCurrentUser();
+    const [logoutMutation] = useLogout();
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            setUserLoggedIn(true);
+    const logout = async () => {
+        try {
+            await logoutMutation();
+        } catch (error) {
+            console.error("Logout failed:", error);
         }
-    }, []);
-
-    const login = (token: string) => {
-        localStorage.setItem("token", token);
-        setUserLoggedIn(true);
     };
 
-    const logout = () => {
-        localStorage.removeItem("token");
-        setUserLoggedIn(false);
+    const user = (!error && data?.getCurrentUser) ? data.getCurrentUser : null;
+
+    const value: AuthContextType = {
+        user,
+        isLoading: loading,
+        isAuthenticated: !!user,
+        logout,
     };
 
     return (
-        <AuthContext.Provider value={{ userLoggedIn, login, logout }}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,20 +1,20 @@
 import useAuth from "@/hooks/useAuth";
 import { Navigate, useLocation } from "react-router";
 
-
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
-    const { userLoggedIn } = useAuth(
-    );
+    const { isAuthenticated, isLoading } = useAuth();
     const location = useLocation();
 
-    if (!userLoggedIn) {
+    // Afficher un loader pendant la vérification
+    if (isLoading) {
+        return <div>Loading...</div>; // Ou votre composant Loader
+    }
+
+    if (!isAuthenticated) {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
-
-    return (
-        children
-    )
+    return children;
 }
 
 export default RequireAuth

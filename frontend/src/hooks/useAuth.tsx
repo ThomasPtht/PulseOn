@@ -1,7 +1,19 @@
+import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
-import { useContext } from "react"
+import { GET_CURRENT_USER, LOGOUT } from "@/graphql/queries";
+import { useMutation, useQuery } from "@apollo/client/react";
 
+type User = {
+    id: string;
+    username: string;
+    email: string;
+};
 
+type GetCurrentUserData = {
+    getCurrentUser: User;
+};
+
+// Hook pour le contexte
 const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {
@@ -10,4 +22,21 @@ const useAuth = () => {
     return context;
 }
 
-export default useAuth
+// Hooks Apollo avec typage
+export const useCurrentUser = () => {
+    return useQuery<GetCurrentUserData>(GET_CURRENT_USER, {
+        fetchPolicy: 'cache-and-network',
+        errorPolicy: 'ignore',
+    });
+};
+
+export const useLogout = () => {
+    return useMutation(LOGOUT, {
+        update: (cache) => {
+            cache.evict({ fieldName: 'getCurrentUser' });
+            cache.gc();
+        },
+    });
+};
+
+export default useAuth;
