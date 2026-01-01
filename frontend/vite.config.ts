@@ -17,5 +17,11 @@ export default defineConfig({
       usePolling: true, // <-- Ajoute cette ligne
       interval: 100,    // <-- Optionnel, pour accélérer le polling
     },
+    proxy: {
+      '/graphql': {
+        target: 'http://localhost:4000',
+        changeOrigin: true,
+      }
+    }
   },
 })

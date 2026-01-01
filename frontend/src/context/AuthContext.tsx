@@ -20,6 +20,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { data, loading, error } = useCurrentUser();
     const [logoutMutation] = useLogout();
 
+
+    console.log("🔍 AuthContext - data:", data);
+    console.log("🔍 AuthContext - loading:", loading);
+    console.log("🔍 AuthContext - error:", error);
+
     const logout = async () => {
         try {
             await logoutMutation();

@@ -1,23 +1,22 @@
 import "dotenv/config";
-import * as cookie from "cookie";
 import "reflect-metadata";
-import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone'
-import jwt, { Secret } from "jsonwebtoken";
-import { buildSchema } from 'type-graphql';
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
+import { buildSchema } from "type-graphql";
 import { PulseOnDataSource } from './config/db';
 import { UserResolver } from './resolvers/UserResolver';
 import { RunSessionResolver } from "./resolvers/RunSessionResolver";
 import { ExerciseResolver } from "./resolvers/ExerciseResolver";
 import { WorkoutSessionResolver } from "./resolvers/WorkoutSessionResolver";
+import { User } from './entities/User';
+import jwt, { Secret } from "jsonwebtoken";
 
 const start = async () => {
-    if (
-        process.env.JWT_SECRET_KEY === null || process.env.JWT_SECRET_KEY === undefined
-    ) {
-        throw Error("no jwt secret")
+    if (!process.env.JWT_SECRET_KEY) {
+        throw Error("No JWT secret");
     }
-    await PulseOnDataSource.initialize()
+
+    await PulseOnDataSource.initialize();
 
     const schema = await buildSchema({
         resolvers: [UserResolver, RunSessionResolver, ExerciseResolver, WorkoutSessionResolver],
@@ -28,40 +27,45 @@ const start = async () => {
     });
 
     const { url } = await startStandaloneServer(server, {
-        listen: { port: 4000 },
         context: async ({ req, res }) => {
-            if (req.headers.cookie) {
-                const cookies = cookie.parse(req.headers.cookie as string);
-                console.log("Cookies parsés:", cookies); // ✅ Debug
+            // ✅ Parse cookies manuellement
+            const cookies: Record<string, string> = {};
+            const cookieHeader = req.headers.cookie;
 
-                if (cookies.token) {
-                    try {
-                        const payload: any = jwt.verify(
-                            cookies.token,
-                            process.env.JWT_SECRET_KEY as Secret
-                        );
+            if (cookieHeader) {
+                cookieHeader.split(';').forEach(cookie => {
+                    const [name, value] = cookie.trim().split('=');
+                    cookies[name] = decodeURIComponent(value);
+                });
+            }
 
-                        console.log("User authentifié:", payload); // ✅ Debug
+            console.log("🍪 Cookies parsed:", cookies);
 
-                        return {
-                            user: {
-                                id: payload.id,
-                                email: payload.email,
-                            },
-                            res,
-                        };
-                    } catch (err: any) {
-                        console.error("JWT error in context:", err.message);
-                        return { res };
-                    }
+            // ✅ Récupérer l'utilisateur depuis le token
+            let user = null;
+            if (cookies.token) {
+                try {
+                    const decoded = jwt.verify(cookies.token, process.env.JWT_SECRET_KEY as Secret) as { id: number; email: string };
+                    user = await User.findOneBy({ id: decoded.id });
+                    console.log("👤 User in context:", user?.id);
+                } catch (error) {
+                    console.error("❌ Token verification failed:", error);
                 }
             }
 
-            console.log("Aucun cookie trouvé"); // ✅ Debug
-            return { res };
-        }
+            return {
+                req: {
+                    headers: req.headers,
+                    cookies
+                },
+                res,
+                user // ✅ Ajout de l'utilisateur au contexte
+            };
+        },
+        listen: { port: 4000 },
     });
 
-    console.log(`🚀 Server listening at: ${url}`);
+    console.log(`🚀 Server ready at ${url}`);
 }
-start()
+
+start();

@@ -26,6 +26,24 @@ export class UserResolver {
         return "Hello from PulseOn API";
     }
 
+    @Query(() => User, { nullable: true })
+    async getCurrentUser(@Ctx() context: any) {
+        try {
+            const token = context.req.cookies?.token;
+
+            if (!token) {
+                return null;
+            }
+
+            const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as Secret) as { id: number; email: string };
+
+            const user = await User.findOneBy({ id: decoded.id });
+            return user;
+        } catch (error) {
+            console.error("Error getting current user:", error);
+            return null;
+        }
+    }
     @Mutation(() => String)
     async login(@Arg("data") loginUserInput: UserLoginInput, @Ctx() context: any) {
         let isPasswordCorrect = false

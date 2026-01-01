@@ -5,7 +5,7 @@ const RequireAuth = ({ children }: { children: JSX.Element }) => {
     const { isAuthenticated, isLoading } = useAuth();
     const location = useLocation();
 
-    // Afficher un loader pendant la vérification
+
     if (isLoading) {
         return <div>Loading...</div>; // Ou votre composant Loader
     }

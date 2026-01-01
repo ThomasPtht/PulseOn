@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { GET_CURRENT_USER, LOGOUT } from "@/graphql/queries";
 import { useMutation, useQuery } from "@apollo/client/react";
+import { LOGIN } from "@/graphql/mutations";
 
 type User = {
     id: string;
@@ -26,7 +27,13 @@ const useAuth = () => {
 export const useCurrentUser = () => {
     return useQuery<GetCurrentUserData>(GET_CURRENT_USER, {
         fetchPolicy: 'cache-and-network',
-        errorPolicy: 'ignore',
+        errorPolicy: 'all',
+    });
+};
+
+export const useLogin = () => {
+    return useMutation(LOGIN, {
+        refetchQueries: [{ query: GET_CURRENT_USER }], // ✅ Refetch automatique
     });
 };
 

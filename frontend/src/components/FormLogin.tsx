@@ -7,12 +7,14 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useLoginMutation, type LoginMutation } from "@/generated/graphql-types";
+import { useCurrentUser } from "@/hooks/useAuth";
 
 
 
 export function LoginForm() {
 
     const [loginMutation] = useLoginMutation();
+    const { refetch } = useCurrentUser();
     const navigate = useNavigate();
 
     const formLoginSchema = z.object({
@@ -38,10 +40,13 @@ export function LoginForm() {
             variables: {
                 data: { ...data }
             },
-            onCompleted: (result: LoginMutation) => {
-                console.log(result);
-                navigate("/");
-                toast.success("Login successful! Welcome back.");
+            onCompleted: async (result: LoginMutation) => { // ✅ async
+                console.log("Login result:", result);
+                if (result.login) {
+                    await refetch(); // ✅ Refetch l'utilisateur
+                    toast.success("Login successful! Welcome back.");
+                    navigate("/");
+                }
             },
             onError: (error: Error) => {
                 console.error("Login error:", error);

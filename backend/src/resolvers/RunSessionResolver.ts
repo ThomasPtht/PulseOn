@@ -7,6 +7,9 @@ import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 export class RunSessionResolver {
     @Mutation(() => RunSession)
     async createRunSession(@Arg("data") data: RunSessionInput, @Ctx() context: any) {
+        if (!context.user) {
+            throw new Error("Not authenticated");
+        }
 
         const user = await User.findOneBy({ id: context.user.id })
         if (!user) {
@@ -18,7 +21,7 @@ export class RunSessionResolver {
             user,
         })
         console.log("New run session created for user:", user?.id);
-        // ✅ Recharger la session avec ses relations pour s'assurer que tout est bien retourné
+
         const savedRunSession = await RunSession.findOne({
             where: { id: newRunSession.id },
             relations: ["user"]
@@ -33,20 +36,20 @@ export class RunSessionResolver {
 
     @Query(() => [RunSession])
     async getMyRunSessions(@Ctx() context: any) {
-        const user = await User.findOneBy({ id: context.user.id })
-        if (!user) {
-            throw new Error("User not found");
+        if (!context.user) {
+            throw new Error("Not authenticated");
         }
+
+        console.log("🔍 Fetching sessions for user:", context.user.id);
+
         const runSession = await RunSession.find({
-            where: { user: { id: user.id } },
-            relations: ["user"], // Charge la relation user
-            order: { date: "DESC" } // Trie par date décroissante
+            where: { user: { id: context.user.id } }, // ✅ Utilise directement context.user.id
+            relations: ["user"],
+            order: { date: "DESC" }
         })
-        if (!runSession) {
-            throw new Error("Run session not found for this user");
-        }
+
+        console.log("✅ Found sessions:", runSession.length);
+
         return runSession;
     }
-
-
 }
