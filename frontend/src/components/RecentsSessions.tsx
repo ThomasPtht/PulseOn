@@ -17,6 +17,8 @@ const RecentsSessions = () => {
             <Card className="p-6 w-5xl">
                 <h2 className="text-lg font-semibold mb-4">Séances récentes</h2>
 
+            
+
                 {sessions.length === 0 ? (
                     <p className="text-muted-foreground">Pas de séances récentes.</p>
                 ) : (

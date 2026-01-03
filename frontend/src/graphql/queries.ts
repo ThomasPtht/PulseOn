@@ -19,8 +19,8 @@ query GetMyRunSessions {
 `;
 
 export const GET_EXERCISES = gql`
-mutation GetExercise {
-  getExercise {
+query GetExercises {
+  getExercises {
     id
     name
   }

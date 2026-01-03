@@ -30,27 +30,33 @@ mutation CreateRunSession($data: RunSessionInput!) {
 `;
 
 export const CREATE_EXERCISE = gql`
-mutation CreateExercise($data: ExerciseInput!) {
-  createExercise(data: $data) {
+mutation CreateExercise($name: String!) {
+  createExercise(name: $name) {
     id
     name
   }
 }
 `;
 
-export const CREATE_WORKOUT_SESSION = gql`
-mutation CreateWorkoutSession($data: WorkoutSessionInput!) {
-  createWorkoutSession(data: $data) {
+export const NEW_WORKOUT_SESSION = gql`
+mutation NewWorkoutSession($data: WorkoutSessionInput!) {
+  newWorkoutSession(data: $data) {
     id
     date
-    exercises {
+    sets {
       id
-      name
-      sets {
+      repetitions
+      weight
+      restSeconds
+      isWarmup
+      exercise {
         id
-        reps
-        weight
+        name
       }
+    }
+    user {
+      id
+      username
     }
   }
 }
