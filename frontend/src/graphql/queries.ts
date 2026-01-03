@@ -18,6 +18,30 @@ query GetMyRunSessions {
 }
 `;
 
+export const GET_MY_WORKOUT_SESSIONS = gql`
+query GetMyWorkoutSessions {
+  getMyWorkoutSessions {
+    id
+    date
+    sets {
+      id
+      repetitions
+      weight
+      restSeconds
+      isWarmup
+      exercise {
+        id
+        name
+      }
+    }
+    user {
+      id
+      username
+    }
+  }
+}
+`;
+
 export const GET_EXERCISES = gql`
 query GetExercises {
   getExercises {

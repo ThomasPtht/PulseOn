@@ -138,9 +138,7 @@ export type UserLoginInput = {
 export type WorkoutSession = {
   __typename?: 'WorkoutSession';
   date: Scalars['DateTimeISO']['output'];
-  duration: Scalars['Int']['output'];
   id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
   sets: Array<SetEntity>;
   user: User;
 };
@@ -189,6 +187,11 @@ export type GetMyRunSessionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetMyRunSessionsQuery = { __typename?: 'Query', getMyRunSessions: Array<{ __typename?: 'RunSession', id: string, title?: string | null, date: any, distance: number, duration: number, avgPace: string, elevation: number, user: { __typename?: 'User', id: string } }> };
+
+export type GetMyWorkoutSessionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMyWorkoutSessionsQuery = { __typename?: 'Query', getMyWorkoutSessions: Array<{ __typename?: 'WorkoutSession', id: string, date: any, sets: Array<{ __typename?: 'SetEntity', id: string, repetitions: number, weight: number, restSeconds: number, isWarmup: boolean, exercise: { __typename?: 'Exercise', id: string, name: string } }>, user: { __typename?: 'User', id: string, username: string } }> };
 
 export type GetExercisesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -444,6 +447,64 @@ export type GetMyRunSessionsQueryHookResult = ReturnType<typeof useGetMyRunSessi
 export type GetMyRunSessionsLazyQueryHookResult = ReturnType<typeof useGetMyRunSessionsLazyQuery>;
 export type GetMyRunSessionsSuspenseQueryHookResult = ReturnType<typeof useGetMyRunSessionsSuspenseQuery>;
 export type GetMyRunSessionsQueryResult = Apollo.QueryResult<GetMyRunSessionsQuery, GetMyRunSessionsQueryVariables>;
+export const GetMyWorkoutSessionsDocument = gql`
+    query GetMyWorkoutSessions {
+  getMyWorkoutSessions {
+    id
+    date
+    sets {
+      id
+      repetitions
+      weight
+      restSeconds
+      isWarmup
+      exercise {
+        id
+        name
+      }
+    }
+    user {
+      id
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMyWorkoutSessionsQuery__
+ *
+ * To run a query within a React component, call `useGetMyWorkoutSessionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyWorkoutSessionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyWorkoutSessionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMyWorkoutSessionsQuery(baseOptions?: Apollo.QueryHookOptions<GetMyWorkoutSessionsQuery, GetMyWorkoutSessionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMyWorkoutSessionsQuery, GetMyWorkoutSessionsQueryVariables>(GetMyWorkoutSessionsDocument, options);
+      }
+export function useGetMyWorkoutSessionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyWorkoutSessionsQuery, GetMyWorkoutSessionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMyWorkoutSessionsQuery, GetMyWorkoutSessionsQueryVariables>(GetMyWorkoutSessionsDocument, options);
+        }
+// @ts-ignore
+export function useGetMyWorkoutSessionsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetMyWorkoutSessionsQuery, GetMyWorkoutSessionsQueryVariables>): Apollo.UseSuspenseQueryResult<GetMyWorkoutSessionsQuery, GetMyWorkoutSessionsQueryVariables>;
+export function useGetMyWorkoutSessionsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetMyWorkoutSessionsQuery, GetMyWorkoutSessionsQueryVariables>): Apollo.UseSuspenseQueryResult<GetMyWorkoutSessionsQuery | undefined, GetMyWorkoutSessionsQueryVariables>;
+export function useGetMyWorkoutSessionsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetMyWorkoutSessionsQuery, GetMyWorkoutSessionsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMyWorkoutSessionsQuery, GetMyWorkoutSessionsQueryVariables>(GetMyWorkoutSessionsDocument, options);
+        }
+export type GetMyWorkoutSessionsQueryHookResult = ReturnType<typeof useGetMyWorkoutSessionsQuery>;
+export type GetMyWorkoutSessionsLazyQueryHookResult = ReturnType<typeof useGetMyWorkoutSessionsLazyQuery>;
+export type GetMyWorkoutSessionsSuspenseQueryHookResult = ReturnType<typeof useGetMyWorkoutSessionsSuspenseQuery>;
+export type GetMyWorkoutSessionsQueryResult = Apollo.QueryResult<GetMyWorkoutSessionsQuery, GetMyWorkoutSessionsQueryVariables>;
 export const GetExercisesDocument = gql`
     query GetExercises {
   getExercises {
