@@ -44,11 +44,11 @@ export function RegisterForm() {
             onCompleted: () => {
 
                 navigate("/login");
-                toast.success("Registration successful! Please log in.");
+                toast.success("Enregistrement réussi ! Vous pouvez maintenant vous connecter.");
             },
             onError: (error: Error) => {
                 console.error("Registration error:", error);
-                toast.error("Registration failed. Please try again.");
+                toast.error("Enregistrement échoué, veuillez réessayer.");
             }
         });
     }

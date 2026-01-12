@@ -44,13 +44,13 @@ export function LoginForm() {
                 console.log("Login result:", result);
                 if (result.login) {
                     await refetch(); // ✅ Refetch l'utilisateur
-                    toast.success("Login successful! Welcome back.");
+                    toast.success("Connexion réussie, bon entraînement !");
                     navigate("/");
                 }
             },
             onError: (error: Error) => {
                 console.error("Login error:", error);
-                toast.error("Login failed. Please check your credentials and try again.");
+                toast.error("Connexion échouée, veuillez réessayer.");
             }
         });
     }
