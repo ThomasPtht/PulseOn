@@ -116,11 +116,14 @@ const FormWorkout = () => {
             await createWorkoutSession({
                 variables: {
                     data: payload
+                },
+                refetchQueries: ["GetMyWorkoutSessions"],
+                awaitRefetchQueries: true,
+                onCompleted: () => {
+                    toast.success("Séance enregistrée !")
+                    window.location.href = "/"
                 }
             })
-
-            toast.success("Séance enregistrée !")
-            navigate("/")
         } catch (error) {
             console.error("Erreur:", error)
             toast.error("Erreur lors de l'enregistrement")

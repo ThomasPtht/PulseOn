@@ -33,15 +33,19 @@ export const useCurrentUser = () => {
 
 export const useLogin = () => {
     return useMutation(LOGIN, {
-        refetchQueries: [{ query: GET_CURRENT_USER }], // ✅ Refetch automatique
+        update: (cache) => {
+            // Vider tout le cache pour éviter les données d'autres utilisateurs
+            cache.reset();
+        },
+        refetchQueries: [{ query: GET_CURRENT_USER }],
     });
 };
 
 export const useLogout = () => {
     return useMutation(LOGOUT, {
         update: (cache) => {
-            cache.evict({ fieldName: 'getCurrentUser' });
-            cache.gc();
+            // Vider complètement le cache lors du logout
+            cache.reset();
         },
     });
 };

@@ -40,12 +40,13 @@ export function LoginForm() {
             variables: {
                 data: { ...data }
             },
-            onCompleted: async (result: LoginMutation) => { // ✅ async
+            onCompleted: async (result: LoginMutation) => {
                 console.log("Login result:", result);
                 if (result.login) {
-                    await refetch(); // ✅ Refetch l'utilisateur
+                    await refetch();
                     toast.success("Connexion réussie, bon entraînement !");
-                    navigate("/");
+                    // Recharger la page pour garantir un état propre
+                    window.location.href = "/";
                 }
             },
             onError: (error: Error) => {

@@ -48,9 +48,11 @@ const FormRunning = () => {
           elevation: values.elevation,
         }
       },
+      refetchQueries: ["GetMyRunSessions"],
+      awaitRefetchQueries: true,
       onCompleted: () => {
         toast.success("Session de course ajoutée avec succès !");
-        navigate("/");
+        window.location.href = "/";
       },
       onError: (error: Error) => {
         console.error("Erreur lors de l'ajout de la session de course :", error);
