@@ -5,6 +5,7 @@ import { defineConfig } from "vite"
 
 // https://vite.dev/config/
 export default defineConfig({
+
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -14,14 +15,16 @@ export default defineConfig({
   server: {
     host: true,
     watch: {
-      usePolling: true, // <-- Ajoute cette ligne
-      interval: 100,    // <-- Optionnel, pour accélérer le polling
+      usePolling: true,
+      interval: 100,    
     },
     proxy: {
       '/graphql': {
         target: 'http://localhost:4000',
         changeOrigin: true,
       }
-    }
+    },
+
   },
+
 })

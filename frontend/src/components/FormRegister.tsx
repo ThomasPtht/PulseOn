@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -62,12 +62,12 @@ export function RegisterForm() {
                     name="username"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>Nom d'utilisateur</FormLabel>
                             <FormControl>
                                 <Input placeholder="johndoe" {...field} />
                             </FormControl>
                             <FormDescription>
-                                This is your public display name.
+                                Ceci sera votre nom d'utilisateur public.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -83,7 +83,7 @@ export function RegisterForm() {
                                 <Input type="email" placeholder="john@example.com" {...field} />
                             </FormControl>
                             <FormDescription>
-                                We'll use this to contact you.
+                                Nous utiliserons cet email pour vous contacter.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -94,18 +94,25 @@ export function RegisterForm() {
                     name="password"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel>Mot de passe</FormLabel>
                             <FormControl>
                                 <Input type="password" placeholder="******" {...field} />
                             </FormControl>
                             <FormDescription>
-                                Must be at least 6 characters long.
+                                Doit être composé d'au moins 6 caractères.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Create Account</Button>
+                <div className="space-y-4">
+                    <div className="flex justify-center">
+                        <Button type="submit" className="w-full max-w-xs">Créer un compte</Button>
+                    </div>
+                    <Link to="/login" className="text-sm text-primary hover:underline flex justify-center">
+                        <p>Se connecter</p>
+                    </Link>
+                </div>
             </form>
         </Form>
     )

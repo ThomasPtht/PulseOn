@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -70,7 +70,7 @@ export function LoginForm() {
                                 <Input type="email" placeholder="john@example.com" {...field} />
                             </FormControl>
                             <FormDescription>
-                                We'll use this to contact you.
+                                Nous utilisons cet email uniquement pour la gestion de ton compte.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -81,18 +81,25 @@ export function LoginForm() {
                     name="password"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel>Mot de passe</FormLabel>
                             <FormControl>
                                 <Input type="password" placeholder="******" {...field} />
                             </FormControl>
                             <FormDescription>
-                                Must be at least 6 characters long.
+                                Doit être composé d'au moins 6 caractères.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Login</Button>
+                <div className="space-y-4">
+                    <div className="flex justify-center">
+                        <Button type="submit" className="w-full max-w-xs">Se connecter</Button>
+                    </div>
+                    <Link to="/register" className="text-sm text-primary hover:underline flex justify-center">
+                        <p>S'enregistrer</p>
+                    </Link>
+                </div>
             </form>
         </Form>
     )

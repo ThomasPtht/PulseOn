@@ -61,3 +61,15 @@ mutation NewWorkoutSession($data: WorkoutSessionInput!) {
   }
 }
 `;
+
+export const DELETE_RUN_SESSION = gql`
+mutation DeleteRunSession($id: Float!) {
+  deleteRunSession(id: $id)
+}
+`;
+
+export const DELETE_WORKOUT_SESSION = gql`
+mutation DeleteWorkoutSession($id: Float!) {
+  deleteWorkoutSession(id: $id)
+}
+`;

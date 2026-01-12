@@ -68,4 +68,26 @@ export class WorkoutSessionResolver {
             relations: ["user", "sets", "sets.exercise"],
         }) as WorkoutSession;
     }
+
+
+    @Mutation(() => Boolean)
+    async deleteWorkoutSession(@Arg("id") id: number, @Ctx() context: any) {
+        if (!context.user) {
+            throw new Error("Not authenticated");
+        }
+
+        const strenghtSession = await WorkoutSession.find({
+            where: { user: { id: context.user.id }, id },
+        });
+
+        if (strenghtSession.length === 0) {
+            throw new Error("Run session not found or you do not have permission to delete it.");
+        }
+
+        const removeResult = await WorkoutSession.delete({ id, user: { id: context.user.id } });
+
+        return (removeResult.affected ?? 0) > 0;
+
+
+    }
 }

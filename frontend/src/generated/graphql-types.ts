@@ -34,6 +34,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   createExercise: Exercise;
   createRunSession: RunSession;
+  deleteRunSession: Scalars['Boolean']['output'];
+  deleteWorkoutSession: Scalars['Boolean']['output'];
   login: Scalars['String']['output'];
   logout: Scalars['String']['output'];
   newWorkoutSession: WorkoutSession;
@@ -48,6 +50,16 @@ export type MutationCreateExerciseArgs = {
 
 export type MutationCreateRunSessionArgs = {
   data: RunSessionInput;
+};
+
+
+export type MutationDeleteRunSessionArgs = {
+  id: Scalars['Float']['input'];
+};
+
+
+export type MutationDeleteWorkoutSessionArgs = {
+  id: Scalars['Float']['input'];
 };
 
 
@@ -182,6 +194,20 @@ export type NewWorkoutSessionMutationVariables = Exact<{
 
 
 export type NewWorkoutSessionMutation = { __typename?: 'Mutation', newWorkoutSession: { __typename?: 'WorkoutSession', id: string, date: any, sets: Array<{ __typename?: 'SetEntity', id: string, repetitions: number, weight: number, restSeconds: number, isWarmup: boolean, exercise: { __typename?: 'Exercise', id: string, name: string } }>, user: { __typename?: 'User', id: string, username: string } } };
+
+export type DeleteRunSessionMutationVariables = Exact<{
+  id: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteRunSessionMutation = { __typename?: 'Mutation', deleteRunSession: boolean };
+
+export type DeleteWorkoutSessionMutationVariables = Exact<{
+  id: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteWorkoutSessionMutation = { __typename?: 'Mutation', deleteWorkoutSession: boolean };
 
 export type GetMyRunSessionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -396,6 +422,68 @@ export function useNewWorkoutSessionMutation(baseOptions?: Apollo.MutationHookOp
 export type NewWorkoutSessionMutationHookResult = ReturnType<typeof useNewWorkoutSessionMutation>;
 export type NewWorkoutSessionMutationResult = Apollo.MutationResult<NewWorkoutSessionMutation>;
 export type NewWorkoutSessionMutationOptions = Apollo.BaseMutationOptions<NewWorkoutSessionMutation, NewWorkoutSessionMutationVariables>;
+export const DeleteRunSessionDocument = gql`
+    mutation DeleteRunSession($id: Float!) {
+  deleteRunSession(id: $id)
+}
+    `;
+export type DeleteRunSessionMutationFn = Apollo.MutationFunction<DeleteRunSessionMutation, DeleteRunSessionMutationVariables>;
+
+/**
+ * __useDeleteRunSessionMutation__
+ *
+ * To run a mutation, you first call `useDeleteRunSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteRunSessionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteRunSessionMutation, { data, loading, error }] = useDeleteRunSessionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteRunSessionMutation(baseOptions?: Apollo.MutationHookOptions<DeleteRunSessionMutation, DeleteRunSessionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteRunSessionMutation, DeleteRunSessionMutationVariables>(DeleteRunSessionDocument, options);
+      }
+export type DeleteRunSessionMutationHookResult = ReturnType<typeof useDeleteRunSessionMutation>;
+export type DeleteRunSessionMutationResult = Apollo.MutationResult<DeleteRunSessionMutation>;
+export type DeleteRunSessionMutationOptions = Apollo.BaseMutationOptions<DeleteRunSessionMutation, DeleteRunSessionMutationVariables>;
+export const DeleteWorkoutSessionDocument = gql`
+    mutation DeleteWorkoutSession($id: Float!) {
+  deleteWorkoutSession(id: $id)
+}
+    `;
+export type DeleteWorkoutSessionMutationFn = Apollo.MutationFunction<DeleteWorkoutSessionMutation, DeleteWorkoutSessionMutationVariables>;
+
+/**
+ * __useDeleteWorkoutSessionMutation__
+ *
+ * To run a mutation, you first call `useDeleteWorkoutSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteWorkoutSessionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteWorkoutSessionMutation, { data, loading, error }] = useDeleteWorkoutSessionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteWorkoutSessionMutation(baseOptions?: Apollo.MutationHookOptions<DeleteWorkoutSessionMutation, DeleteWorkoutSessionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteWorkoutSessionMutation, DeleteWorkoutSessionMutationVariables>(DeleteWorkoutSessionDocument, options);
+      }
+export type DeleteWorkoutSessionMutationHookResult = ReturnType<typeof useDeleteWorkoutSessionMutation>;
+export type DeleteWorkoutSessionMutationResult = Apollo.MutationResult<DeleteWorkoutSessionMutation>;
+export type DeleteWorkoutSessionMutationOptions = Apollo.BaseMutationOptions<DeleteWorkoutSessionMutation, DeleteWorkoutSessionMutationVariables>;
 export const GetMyRunSessionsDocument = gql`
     query GetMyRunSessions {
   getMyRunSessions {

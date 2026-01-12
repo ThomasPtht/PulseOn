@@ -1,6 +1,10 @@
 import { formatDistanceToNow } from "date-fns"
 import { fr } from "date-fns/locale"
 import { Badge } from "@/components/ui/badge"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog"
+import { Button } from "./ui/button"
+import { Trash } from "lucide-react"
+import { useDeleteRunSessionMutation, useDeleteWorkoutSessionMutation } from "@/generated/graphql-types"
 
 type Set = {
     id: string
@@ -20,7 +24,7 @@ type StrenghtSessionCardProps = {
     sets: Set[]
 }
 
-const StrenghtSessionCard = ({ date, sets }: StrenghtSessionCardProps) => {
+const StrenghtSessionCard = ({ id, date, sets }: StrenghtSessionCardProps) => {
     const relativeDate = formatDistanceToNow(new Date(date), { addSuffix: true, locale: fr })
 
     // Grouper les sets par exercice
@@ -38,6 +42,16 @@ const StrenghtSessionCard = ({ date, sets }: StrenghtSessionCardProps) => {
 
     // Calculer le volume total (reps × poids)
     const totalVolume = sets.reduce((sum, set) => sum + (set.repetitions * set.weight), 0)
+
+
+    const [deleteSession] = useDeleteWorkoutSessionMutation({
+        variables: { id: parseFloat(id) },
+        refetchQueries: ['GetMyRunSessions', 'GetMyWorkoutSessions']
+    });
+
+    const handleDelete = () => {
+        deleteSession();
+    };
 
     return (
         <div className="flex border rounded-lg p-4 hover:bg-accent transition-colors">
@@ -74,6 +88,35 @@ const StrenghtSessionCard = ({ date, sets }: StrenghtSessionCardProps) => {
                         ⚖️
                         <p className="font-semibold ml-1">{totalVolume.toFixed(0)} kg</p>
                     </div>
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="ml-auto hover:bg-destructive/10"
+
+                            >
+                                <Trash className="h-4 w-4 text-destructive" />
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Supprimer cette séance ?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    Cette action est irréversible. La séance "{ }" du {new Date(date).toLocaleDateString('fr-FR')} sera définitivement supprimée.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                <AlertDialogAction
+                                    onClick={handleDelete}
+                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                >
+                                    Supprimer
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                 </div>
 
                 {/* Liste des exercices */}
@@ -85,6 +128,7 @@ const StrenghtSessionCard = ({ date, sets }: StrenghtSessionCardProps) => {
                     ))}
                 </div>
             </div>
+
         </div>
     )
 }

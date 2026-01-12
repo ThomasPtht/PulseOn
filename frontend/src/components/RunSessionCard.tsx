@@ -1,6 +1,11 @@
 import { formatDistanceToNow } from "date-fns"
 import { fr } from "date-fns/locale"
 import { Badge } from "@/components/ui/badge"
+import { Trash } from "lucide-react"
+import { useDeleteRunSessionMutation } from "@/generated/graphql-types"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog"
+import { Button } from "./ui/button"
+
 
 
 interface RunSessionCardProps {
@@ -13,11 +18,18 @@ interface RunSessionCardProps {
   elevation: number
 }
 
-const RunSessionCard = ({ date, title, distance, duration, pace }: RunSessionCardProps) => {
+const RunSessionCard = ({ id, date, title, distance, duration, pace }: RunSessionCardProps) => {
 
   const relativeDate = formatDistanceToNow(new Date(date), { addSuffix: true, locale: fr });
 
-  console.log({ title })
+  const [deleteSession] = useDeleteRunSessionMutation({
+    variables: { id: parseFloat(id) },
+    refetchQueries: ['GetMyRunSessions', 'GetMyWorkoutSessions']
+  });
+
+  const handleDelete = () => {
+    deleteSession();
+  };
 
   return (
     <div className="flex border rounded-lg p-4 hover:bg-accent transition-colors">
@@ -48,6 +60,35 @@ const RunSessionCard = ({ date, title, distance, duration, pace }: RunSessionCar
           <div>
             <p className="font-semibold">{pace} /km</p>
           </div>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="ml-auto hover:bg-destructive/10"
+
+              >
+                <Trash className="h-4 w-4 text-destructive" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Supprimer cette séance ?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Cette action est irréversible. La séance "{title}" du {new Date(date).toLocaleDateString('fr-FR')} sera définitivement supprimée.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Annuler</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDelete}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Supprimer
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
     </div>

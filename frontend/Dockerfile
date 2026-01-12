@@ -4,8 +4,8 @@ RUN apk --no-cache add curl
 
 WORKDIR /app
 
-COPY package.json package.json
-RUN npm install
+COPY package.json package-lock.json ./
+RUN npm ci --legacy-peer-deps
 
 COPY public public
 COPY src src

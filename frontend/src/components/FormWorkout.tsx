@@ -27,6 +27,7 @@ type Exercise = {
 const FormWorkout = () => {
     const [exercises, setExercises] = useState<Exercise[]>([])
     const [currentExerciseName, setCurrentExerciseName] = useState("")
+    const [sessionDate, setSessionDate] = useState(new Date().toISOString().split('T')[0])
     const navigate = useNavigate()
 
     const { data: exercisesData } = useGetExercisesQuery()
@@ -98,7 +99,7 @@ const FormWorkout = () => {
 
         try {
             const payload = {
-                date: new Date().toISOString(),
+                date: new Date(sessionDate).toISOString(),
                 exercises: exercises.map(ex => ({
                     exerciseId: Number(ex.exerciseId), // ✅ Forcez la conversion ici aussi
                     sets: ex.sets.map(s => ({
@@ -129,14 +130,29 @@ const FormWorkout = () => {
     return (
         <div>
             <Card className="p-6 w-full max-w-4xl mt-6">
-                <CardTitle>Ajouter un exercice</CardTitle>
-                <div className="flex gap-2 mt-4">
+                <CardTitle>Nouvelle séance de musculation</CardTitle>
+
+                {/* Champ de date */}
+                <div className="mt-4">
+                    <label className="text-sm font-medium">Date de la séance</label>
                     <Input
-                        value={currentExerciseName}
-                        onChange={(e) => setCurrentExerciseName(e.target.value)}
-                        placeholder="Ex: Développé couché, Squat..."
+                        type="date"
+                        value={sessionDate}
+                        onChange={(e) => setSessionDate(e.target.value)}
+                        className="mt-1"
                     />
-                    <Button onClick={handleAddExercise}>Ajouter</Button>
+                </div>
+
+                <div className="mt-6">
+                    <label className="text-sm font-medium">Ajouter un exercice</label>
+                    <div className="flex gap-2 mt-2">
+                        <Input
+                            value={currentExerciseName}
+                            onChange={(e) => setCurrentExerciseName(e.target.value)}
+                            placeholder="Ex: Développé couché, Squat..."
+                        />
+                        <Button onClick={handleAddExercise}>Ajouter</Button>
+                    </div>
                 </div>
             </Card>
 
