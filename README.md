@@ -6,7 +6,7 @@ Web application for tracking and analyzing your sport sessions(running and stren
 
 ## Technologies Used
 - Frontend: React, TypeScript, Tailwind CSS, React Hook Form, Zod, Apollo Client
-- Backend: Node.js, Express, TypeScript, GraphQL, TypeOrm, PostgreSQL, Apollo Server
+- Backend: Node.js, Express, TypeScript, GraphQL, TypeOrm, PostgreSQL & Adminer to manage the database, Apollo Server
 - Authentication: JWT
 - Deployment: Docker, Docker Compose
 - Testing: Vitest
