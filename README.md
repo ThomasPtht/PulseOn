@@ -12,11 +12,11 @@ Web application for tracking and analyzing your sport sessions(running and stren
 - Testing: Vitest
 
 
-![Alt text](./public/LoginPage.png?raw=true "Login Page Screenshot")
+![Login Page](./frontend/public/LoginPage.png "Login Page Screenshot")
 
-![Alt text](./public/HomePage.png?raw=true "Home Page Screenshot")
+![Home Page](./frontend/public/HomePage.png "Home Page Screenshot")
 
-![Alt text](./public/AddSession.png?raw=true "Add Session Screenshot")
+![Add Session](./frontend/public/AddSession.png "Add Session Screenshot")
 
 
 ## 📁 Project Structure
