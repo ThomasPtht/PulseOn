@@ -5,6 +5,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Button } from "./ui/button"
 import { Trash } from "lucide-react"
 import { useDeleteRunSessionMutation, useDeleteWorkoutSessionMutation } from "@/generated/graphql-types"
+import { toast } from "sonner"
 
 type Set = {
     id: string
@@ -46,7 +47,10 @@ const StrenghtSessionCard = ({ id, date, sets }: StrenghtSessionCardProps) => {
 
     const [deleteSession] = useDeleteWorkoutSessionMutation({
         variables: { id: parseFloat(id) },
-        refetchQueries: ['GetMyRunSessions', 'GetMyWorkoutSessions']
+        refetchQueries: ['GetMyRunSessions', 'GetMyWorkoutSessions'],
+        onCompleted: () => {
+            toast.success("Séance supprimée avec succès !");
+        }
     });
 
     const handleDelete = () => {

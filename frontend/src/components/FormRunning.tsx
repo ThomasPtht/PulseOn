@@ -22,7 +22,7 @@ type FormRunningValues = z.infer<typeof formRunningSchema>
 
 const FormRunning = () => {
   const [RunningSession] = useCreateRunSessionMutation();
-  const navigate = useNavigate();
+
 
   const form = useForm<FormRunningValues>({
     resolver: zodResolver(formRunningSchema),

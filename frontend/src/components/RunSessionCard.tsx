@@ -5,6 +5,7 @@ import { Trash } from "lucide-react"
 import { useDeleteRunSessionMutation } from "@/generated/graphql-types"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog"
 import { Button } from "./ui/button"
+import { toast } from "sonner"
 
 
 
@@ -24,7 +25,10 @@ const RunSessionCard = ({ id, date, title, distance, duration, pace }: RunSessio
 
   const [deleteSession] = useDeleteRunSessionMutation({
     variables: { id: parseFloat(id) },
-    refetchQueries: ['GetMyRunSessions', 'GetMyWorkoutSessions']
+    refetchQueries: ['GetMyRunSessions', 'GetMyWorkoutSessions'],
+    onCompleted: () => {
+      toast.success("Séance supprimée avec succès !");
+    }
   });
 
   const handleDelete = () => {
