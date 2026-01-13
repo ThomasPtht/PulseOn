@@ -15,7 +15,7 @@ export function LoginForm() {
 
     const [loginMutation] = useLoginMutation();
     const { refetch } = useCurrentUser();
-    const navigate = useNavigate();
+
 
     const formLoginSchema = z.object({
         email: z.string().min(5, {
