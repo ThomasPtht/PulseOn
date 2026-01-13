@@ -15,6 +15,11 @@ vi.mock('@/hooks/useAuth', () => ({
 
 const logoutMock = vi.fn().mockResolvedValue({ data: { logout: true } })
 
+// Mock the logout mutation
+vi.mock('@/generated/graphql-types', () => ({
+    useLogoutMutation: () => [logoutMock]
+}))
+
 describe('Header Component', () => {
     beforeEach(() => {
         vi.clearAllMocks()
@@ -92,10 +97,8 @@ describe('Header Component', () => {
         // Trouver et cliquer sur "Se déconnecter" dans le menu
         const logoutButton = await screen.findByText("Se déconnecter")
         await user.click(logoutButton)
-        
 
-        logoutMock()
-
+        // Vérifier que la fonction de déconnexion a été appelée par le composant
         expect(logoutMock).toHaveBeenCalled()
 
     })
