@@ -1,10 +1,10 @@
-
 import { MockedProvider } from "@apollo/client/testing"
 import { render, screen } from "@testing-library/react"
-import { MemoryRouter } from "react-router"
+import '@testing-library/jest-dom'
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { LoginForm } from "./FormLogin"
 import userEvent from "@testing-library/user-event"
+import { MemoryRouter, Route, Routes } from "react-router"
 
 const loginMock = vi.fn().mockResolvedValue({ data: { login: { id: "1", email: "test@gmail.com" } } })
 
@@ -13,7 +13,7 @@ vi.mock("@/generated/graphql-types", () => ({
     useLoginMutation: () => [loginMock]
 }))
 
-describe('Header Component', () => {
+describe('Login Component', () => {
     beforeEach(() => {
         vi.clearAllMocks()
     })
@@ -37,17 +37,19 @@ describe('Header Component', () => {
     it("click on s'enregistrer should redirect to /register", async () => {
         render(
             <MockedProvider mocks={[]}>
-                <MemoryRouter>
-                    <LoginForm />
+                <MemoryRouter initialEntries={["/login"]}>
+                    <Routes>
+                        <Route path="/login" element={<LoginForm />} />
+                        <Route path="/register" element={<h1 title="Créer un compte">Rejoignez PulseOn</h1>} />
+                    </Routes>
                 </MemoryRouter>
             </MockedProvider>
         )
-        // const registerLink = screen.getByText("S'enregistrer").closest('a')
-        // expect(registerLink?.getAttribute('href')).toBe('/register')
 
         const user = userEvent.setup()
         await user.click(screen.getByRole('link', { name: /s'enregistrer/i }))
 
+        expect(screen.getByTitle("Créer un compte")).toBeInTheDocument()
     })
 
     it("shoud login user when login button is clicked", async () => {
