@@ -9,7 +9,7 @@ Web application for tracking and analyzing your sport sessions(running and stren
 - Backend: Node.js, Express, TypeScript, GraphQL, TypeOrm, PostgreSQL & Adminer to manage the database, Apollo Server
 - Authentication: JWT, argon2 for password hashing
 - Deployment: Docker, Docker Compose
-- Testing: Vitest
+- Testing: Vitest, React Testing Library
 
 
 ![Login Page](./frontend/public/LoginPage.png "Login Page Screenshot")
